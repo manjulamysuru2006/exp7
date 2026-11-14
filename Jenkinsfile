@@ -3,6 +3,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout Source Code') {
             steps {
                 echo 'Pulling code from Git repository...'
@@ -10,11 +11,16 @@ pipeline {
             }
         }
 
+        stage('Check Python Installation') {
+            steps {
+                echo 'Checking Python installation...'
+                bat 'where python'
+                bat 'python --version'
+            }
+        }
+
         stage('Build & Execute Script') {
             steps {
-                echo 'Checking Python version...'
-                bat 'python --version'
-
                 echo 'Running exp.py...'
                 bat 'python exp.py'
             }
@@ -32,9 +38,11 @@ pipeline {
         success {
             echo 'SUCCESS: CI Pipeline completed successfully!'
         }
+
         failure {
             echo 'FAILURE: Pipeline failed. Check build logs.'
         }
+
         always {
             echo 'Pipeline execution finished.'
         }
