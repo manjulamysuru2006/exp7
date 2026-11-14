@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -11,6 +12,9 @@ pipeline {
 
         stage('Build & Execute Script') {
             steps {
+                echo 'Checking Python version...'
+                bat 'python --version'
+
                 echo 'Running exp.py...'
                 bat 'python exp.py'
             }
@@ -19,7 +23,7 @@ pipeline {
         stage('Code Stability Check') {
             steps {
                 echo 'Verifying pipeline execution...'
-                bat 'echo "Python script executed successfully!"'
+                bat 'echo Python script executed successfully!'
             }
         }
     }
@@ -30,6 +34,9 @@ pipeline {
         }
         failure {
             echo 'FAILURE: Pipeline failed. Check build logs.'
+        }
+        always {
+            echo 'Pipeline execution finished.'
         }
     }
 }
